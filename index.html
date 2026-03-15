@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <meta name="theme-color" content="#0F0F14" id="meta-theme"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Gold Manager"/>
+  <title>Gold Manager</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- ===================== LOGIN PAGE ===================== -->
+<div id="page-login" class="login-screen">
+  <div class="login-glow"></div>
+  <div class="login-wrap">
+    <div class="login-logo">
+      <div class="login-gem">💎</div>
+      <h1 class="login-title">Gold Manager</h1>
+      <p class="login-sub">Shop Management System</p>
+    </div>
+    <form id="login-form" class="login-card">
+      <div class="fg">
+        <label>Email</label>
+        <input type="email" id="l-email" placeholder="apna@email.com" required autocomplete="email"/>
+      </div>
+      <div class="fg">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="l-pass" placeholder="Password" required autocomplete="current-password"/>
+          <button type="button" id="eye-btn" class="eye-btn" tabindex="-1">👁️</button>
+        </div>
+      </div>
+      <div id="login-err" class="err-box hidden"></div>
+      <button type="submit" class="btn-primary full" id="login-btn">Login</button>
+      <a href="#" id="forgot-link" class="forgot-link">Password bhool gaye?</a>
+    </form>
+    <div class="login-clock">
+      <div id="lc-time" class="lc-time">--:--:-- --</div>
+      <div id="lc-date" class="lc-date">-- --- ----</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP SHELL ===================== -->
+<div id="app" class="app hidden">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="tb-left">
+      <span class="tb-gem">💎</span>
+      <span id="tb-shop" class="tb-shop">Gold Manager</span>
+    </div>
+    <div class="tb-right">
+      <div class="live-clock">
+        <div id="tb-time" class="tb-time">--:--:--</div>
+        <div id="tb-date" class="tb-date">--- -- ----</div>
+      </div>
+      <button id="theme-btn" class="icon-btn" title="Theme">🌙</button>
+      <button id="logout-btn" class="icon-btn" title="Logout">⏻</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main" class="main">
+
+    <!-- PAGE: DASHBOARD -->
+    <div id="pg-dashboard" class="page active">
+      <div class="ph">
+        <h2 class="ptitle">Dashboard</h2>
+        <span id="role-badge" class="role-badge">Owner</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card s-red"><div class="sl">Total Udhaar</div><div id="s-out" class="sv">...</div></div>
+        <div class="stat-card s-gold"><div class="sl">Customers</div><div id="s-cust" class="sv">—</div></div>
+        <div class="stat-card s-green"><div class="sl">Is Mahine</div><div id="s-month" class="sv">—</div></div>
+        <div class="stat-card s-purple"><div class="sl">Gold (Saal)</div><div id="s-gold" class="sv">—</div></div>
+      </div>
+      <div class="sec-title">⚠️ Sabse Zyada Udhaar</div>
+      <div id="top-udhaar" class="top-udhaar"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- PAGE: CUSTOMERS -->
+    <div id="pg-customers" class="page">
+      <div class="ph">
+        <h2 class="ptitle">Customers</h2>
+        <button id="add-cust-btn" class="btn-gold btn-sm">+ Add</button>
+      </div>
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" id="cust-search" placeholder="Naam se search karo..." autocomplete="off"/>
+      </div>
+      <div id="cust-list" class="cust-list"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- PAGE: CUSTOMER DETAIL -->
+    <div id="pg-detail" class="page">
+      <div class="ph">
+        <button id="back-btn" class="btn-back">← Back</button>
+        <h2 id="d-name" class="ptitle" style="font-size:17px">Customer</h2>
+        <button id="wa-btn" class="btn-wa btn-sm">💬 WA</button>
+      </div>
+      <div id="d-contact" class="contact-card"></div>
+      <div class="bal-row">
+        <div class="bal-card"><div class="bl">Gold Kharida</div><div id="b-gold" class="bv">0g</div></div>
+        <div class="bal-card"><div class="bl">Total Paid</div><div id="b-paid" class="bv">₹0</div></div>
+        <div class="bal-card s-red"><div class="bl">Outstanding</div><div id="b-out" class="bv c-red">₹0</div></div>
+      </div>
+      <div class="action-row">
+        <button id="add-txn-btn" class="btn-gold">+ Transaction</button>
+        <button id="add-pay-btn" class="btn-sec">₹ Payment</button>
+        <button id="receipt-btn" class="btn-sec">🖨️ Receipt</button>
+      </div>
+      <div class="sec-title" style="margin-top:4px">Transaction History</div>
+      <div id="txn-list" class="txn-list"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- PAGE: SETTINGS -->
+    <div id="pg-settings" class="page">
+      <div class="ph"><h2 class="ptitle">Settings</h2></div>
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="shop">🏪 Shop</button>
+        <button class="tab-btn" data-tab="staff">👥 Staff</button>
+        <button class="tab-btn" data-tab="archive">📁 Archive</button>
+      </div>
+      <!-- Shop Tab -->
+      <div id="tab-shop" class="tab-pane active">
+        <div class="fg"><label>Dukaan ka Naam</label><input type="text" id="s-sname" placeholder="e.g. Sharma Gold & Jewellers"/></div>
+        <div class="fg"><label>Owner ka Naam</label><input type="text" id="s-oname" placeholder="e.g. Ramesh Sharma"/></div>
+        <div class="fg"><label>Address</label><textarea id="s-addr" placeholder="Poora address"></textarea></div>
+        <div class="fg"><label>Phone</label><input type="tel" id="s-phone" placeholder="10 digit number"/></div>
+        <div class="fg"><label>GST (Optional)</label><input type="text" id="s-gst" placeholder="GST number"/></div>
+        <div class="fg">
+          <label>WhatsApp Message Template</label>
+          <textarea id="s-watemplate" placeholder="WhatsApp message..."></textarea>
+          <small class="hint">Variables: {customerName} {outstanding} {shopName}</small>
+        </div>
+        <button id="save-settings-btn" class="btn-primary full">💾 Save Settings</button>
+      </div>
+      <!-- Staff Tab -->
+      <div id="tab-staff" class="tab-pane">
+        <div class="sec-header">
+          <div class="sec-title" style="margin:0">Staff Members</div>
+          <button id="add-staff-btn" class="btn-gold btn-sm">+ Add Staff</button>
+        </div>
+        <div id="staff-list" class="staff-list"><div class="loading">Loading...</div></div>
+      </div>
+      <!-- Archive Tab -->
+      <div id="tab-archive" class="tab-pane">
+        <div class="arch-block">
+          <h3>📥 Current Year Export</h3>
+          <p class="hint">Is saal ka data Excel mein download karo.</p>
+          <button id="export-btn" class="btn-primary">Download Excel</button>
+        </div>
+        <div class="divider"></div>
+        <div class="arch-block">
+          <h3>📁 Year End Archive</h3>
+          <p class="hint">Data archive karo. Outstanding carry forward ho jaayega.</p>
+          <button id="archive-btn" class="btn-danger">Archive &amp; Start New Year</button>
+        </div>
+        <div class="divider"></div>
+        <div class="arch-block">
+          <h3>📂 Past Archives</h3>
+          <div id="arch-list" class="arch-list"><div class="loading">Loading...</div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bot-nav">
+    <button class="nav-btn active" data-nav="dashboard"><span class="ni">🏠</span><span class="nl">Home</span></button>
+    <button class="nav-btn" data-nav="customers"><span class="ni">👥</span><span class="nl">Customers</span></button>
+    <button class="nav-btn nav-add" id="nav-add"><span class="nav-circle">➕</span><span class="nl">Add</span></button>
+    <button class="nav-btn" id="nav-settings" data-nav="settings"><span class="ni">⚙️</span><span class="nl">Settings</span></button>
+  </nav>
+</div>
+
+<!-- ===================== MODALS ===================== -->
+
+<!-- Modal: Add Customer -->
+<div id="modal-cust" class="modal hidden">
+  <div class="mo" id="mo-cust"></div>
+  <div class="mb">
+    <div class="mh"><h3>Add Customer</h3><button class="mc-btn">✕</button></div>
+    <div class="mbody">
+      <div class="fg"><label>Naam *</label><input type="text" id="cn-name" placeholder="Full name" autocomplete="off"/></div>
+      <div class="fg"><label>Phone</label><input type="tel" id="cn-phone" placeholder="10 digit number"/></div>
+      <div class="fg"><label>Address</label><textarea id="cn-addr" placeholder="Address (optional)"></textarea></div>
+      <div id="err-cust" class="err-box hidden"></div>
+      <button id="sv-cust-btn" class="btn-primary full">Add Customer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add Transaction -->
+<div id="modal-txn" class="modal hidden">
+  <div class="mo" id="mo-txn"></div>
+  <div class="mb">
+    <div class="mh"><h3>New Transaction</h3><button class="mc-btn">✕</button></div>
+    <div class="mbody">
+      <div class="fg"><label>Item Description *</label><input type="text" id="t-item" placeholder="e.g. Gold Necklace, Ring" autocomplete="off"/></div>
+      <div class="form-row">
+        <div class="fg" style="flex:2"><label>Gold Weight *</label><input type="number" id="t-weight" placeholder="0.00" min="0" step="0.01"/></div>
+        <div class="fg" style="flex:1"><label>Unit</label><select id="t-unit"><option value="grams">Grams</option><option value="tola">Tola</option></select></div>
+      </div>
+      <div class="fg"><label>Total Amount (₹) *</label><input type="number" id="t-total" placeholder="0" min="0"/></div>
+      <div class="fg"><label>Amount Paid (₹) *</label><input type="number" id="t-paid" placeholder="0" min="0"/></div>
+      <div id="t-bal-preview" class="bal-preview hidden">Balance: <strong id="t-bal-val">₹0</strong></div>
+      <div class="fg"><label>Payment Mode</label><select id="t-mode"><option value="cash">Cash</option><option value="upi">UPI</option><option value="cheque">Cheque</option></select></div>
+      <div class="fg"><label>Notes (Optional)</label><textarea id="t-notes" placeholder="Koi bhi note..."></textarea></div>
+      <div class="auto-dt">📅 Date &amp; Time: <strong id="t-dt">—</strong> <span class="auto-badge">AUTO</span></div>
+      <div id="err-txn" class="err-box hidden"></div>
+      <button id="sv-txn-btn" class="btn-primary full">Save Transaction</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Record Payment -->
+<div id="modal-pay" class="modal hidden">
+  <div class="mo" id="mo-pay"></div>
+  <div class="mb">
+    <div class="mh"><h3>Record Payment</h3><button class="mc-btn">✕</button></div>
+    <div class="mbody">
+      <div class="out-info">Abhi ka Outstanding: <strong id="p-curr-out">₹0</strong></div>
+      <div class="fg"><label>Amount Received (₹) *</label><input type="number" id="p-amount" placeholder="0" min="0"/></div>
+      <div class="fg"><label>Payment Mode</label><select id="p-mode"><option value="cash">Cash</option><option value="upi">UPI</option><option value="cheque">Cheque</option></select></div>
+      <div class="fg"><label>Notes (Optional)</label><textarea id="p-notes" placeholder="e.g. Partial payment"></textarea></div>
+      <div class="auto-dt">📅 Date &amp; Time: <strong id="p-dt">—</strong> <span class="auto-badge">AUTO</span></div>
+      <div id="err-pay" class="err-box hidden"></div>
+      <button id="sv-pay-btn" class="btn-primary full">Save Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Quick Add -->
+<div id="modal-quick" class="modal hidden">
+  <div class="mo" id="mo-quick"></div>
+  <div class="mb mb-sm">
+    <div class="mh"><h3>Quick Add</h3><button class="mc-btn">✕</button></div>
+    <div class="mbody">
+      <button id="q-cust" class="quick-btn">👤 Naya Customer</button>
+      <button id="q-txn" class="quick-btn">📦 Naya Transaction</button>
+      <button id="q-pay" class="quick-btn">₹ Payment Record</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add Staff -->
+<div id="modal-staff" class="modal hidden">
+  <div class="mo" id="mo-staff"></div>
+  <div class="mb">
+    <div class="mh"><h3>Add Staff Member</h3><button class="mc-btn">✕</button></div>
+    <div class="mbody">
+      <div class="fg"><label>Naam *</label><input type="text" id="st-name" placeholder="Staff ka naam"/></div>
+      <div class="fg"><label>Email *</label><input type="email" id="st-email" placeholder="Email address"/></div>
+      <div class="fg"><label>Password *</label><input type="password" id="st-pass" placeholder="Min 6 characters"/></div>
+      <div id="err-staff" class="err-box hidden"></div>
+      <button id="sv-staff-btn" class="btn-primary full">Add Staff</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- Excel Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- App Scripts (order matters!) -->
+<script src="js/config.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/database.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<!-- PWA -->
+<script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('sw.js').catch(e=>console.warn('SW:',e));
+    });
+  }
+</script>
+</body>
+</html>
